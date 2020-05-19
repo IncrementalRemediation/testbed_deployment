@@ -1,0 +1,22 @@
+
+*.injector-experiment.yml
+
+### Heat ###
+parameters*.txt
+keys/
+
+### Ansible ###
+*.inventory
+ansible-inventory*.ini
+*.hosts
+*.retry
+
+### VisualStudioCode ###
+.vscode/
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+### Python ###
+*.pyc

@@ -1,0 +1,26 @@
+#!/usr/bin/env ansible-playbook
+
+- import_playbook: reset-collector-injector.yml
+
+- name: Delete collector data
+  hosts: bitflow-collector
+  tasks:
+    - include_role:
+        name: ../../roles/bitflow-collector
+        tasks_from: clean-data
+
+- name: Delete client statistics data
+  hosts: client
+  vars:
+    cleaned_directory: "{{ rtmp.client_log_dir }}"
+  tasks:
+    - include_tasks: ../../ansible-common/clean-directory-contents.yml
+      become: true
+
+- name: Delete SIPP logs
+  hosts: sippstress
+  vars:
+    cleaned_directory: "{{ sipp.output_dir }}"
+  tasks:
+    - include_tasks: ../../ansible-common/clean-directory-contents.yml
+      become: true

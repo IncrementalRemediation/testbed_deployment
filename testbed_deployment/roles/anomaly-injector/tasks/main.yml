@@ -1,0 +1,27 @@
+
+# TODO is this usefull/required?
+#injector:
+#  cron_job: pgrep -f '(mem_alloc|python3.6)' | while read PID; do echo -17 > /proc/$PID/oom_adj; done
+
+
+- name: start injector-agent docker container
+  tags: [ docker-container, injector ]
+  docker_container:
+      image: "{{ injector.image }}"
+      name: "{{ injector.container_name }}"
+      hostname: "{{ inventory_hostname }}"
+      state: started
+      pid_mode: host
+      network_mode: host
+      pull: "true"
+      privileged: "yes"
+      restart_policy: always
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+      ports:
+        - "{{ injector.api_port }}:{{ injector.api_port }}"
+      command: [
+          "-api-port", "{{ injector.api_port }}",
+          "-host", "{{ inventory_hostname }}",
+          "-anomaly-pool", "{{ injector.anomaly_pool }}"
+      ]

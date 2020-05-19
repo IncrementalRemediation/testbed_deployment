@@ -1,0 +1,24 @@
+#!/usr/bin/env ansible-playbook
+
+# TODO limit the vms that install collector/injector/exposer?
+
+- name: Install Bitflow collector
+  hosts: bitflow-collector
+  roles:
+    - ../roles/bitflow-collector
+
+- name: Install anomaly injector
+  hosts: anomaly-injector
+  roles:
+    - ../roles/anomaly-injector
+
+- name: Install Docker event exposer
+  hosts: docker-event-exposer
+  roles:
+    - ../roles/docker-events-exposer
+
+# TODO test this role/container and add the host-group
+#- name: Install eBPF agent
+#  hosts: ebpf-agent
+#  roles:
+#    - ../roles/ebpf-agent

@@ -1,0 +1,6 @@
+.idea/
+*.iml
+.cproject
+.project
+target/
+*.log.*

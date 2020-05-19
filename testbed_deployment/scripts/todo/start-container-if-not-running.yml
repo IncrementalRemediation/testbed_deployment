@@ -1,0 +1,13 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Start container if not running
+  hosts: all
+  become: true
+  tasks:
+    - name: Check container status
+      shell: docker inspect --format='{{ '{{' }} .State.Status {{ '}}' }}' {{ container }}
+      register: result
+    - debug: var=result.stdout  
+    - name: Start if not running
+      shell: docker start {{ container }}
+      when: "'running' not in result.stdout"

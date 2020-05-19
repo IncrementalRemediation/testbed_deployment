@@ -1,0 +1,41 @@
+# tasks file for services_deployment
+- file:
+    path: "{{ compose_dir }}"
+    state: directory
+    mode: 0777
+
+- file:
+    path: "{{ home }}/neo4j/data"
+    state: directory
+    mode: 0777
+  become: true
+  become_method: sudo
+
+- file:
+    path: "{{ home }}/neo4j/logs"
+    state: directory
+    mode: 0777
+  become: true
+  become_method: sudo
+
+- file:
+    path: "{{ home }}/neo4j/conf"
+    state: directory
+    mode: 0777
+  become: true
+  become_method: sudo
+
+- name: Upload docker-compose files
+  synchronize: 
+    src: "{{ item }}"
+    dest: "{{ compose_dir }}"
+  with_items:
+    - "../files/docker-compose.yml"
+    - "../file..env"
+
+- name: Get Neo4J Image
+  docker_service:
+    project_src: "{{ compose_dir }}"    
+    build: no
+    restarted: yes
+  register: deployment_output

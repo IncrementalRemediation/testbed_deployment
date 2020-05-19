@@ -1,0 +1,25 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Check data collector output
+  hosts: bitflow-collector
+  tasks:
+    - include_role:
+        name: ../../roles/bitflow-collector
+        tasks_from: check-data-directory
+
+- name: Check sipp data output
+  hosts: sippstress
+  vars:
+    output_check_directory: "{{ sipp.output_dir }}"
+    max_file_age_seconds: 300
+  tasks:
+    - include_tasks: ../../ansible-common/check-output-directory.yml
+
+- name: Check data output of VOD clients
+  hosts: client
+  vars:
+    output_check_directory: "{{ rtmp.client_log_dir }}"
+    max_file_age_seconds: 300
+  tasks:
+    - include_tasks: ../../ansible-common/check-output-directory.yml
+

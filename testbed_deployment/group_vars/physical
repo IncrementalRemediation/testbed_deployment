@@ -1,0 +1,12 @@
+
+collector:
+    extra_args: "-exclude net-io/nic/ -exclude ovsdb/"
+
+docker_events_exposer:
+    local_server_name: "{{ ansible_fqdn }}"
+
+bootstrap_packages: [
+  tree, curl, wget, git,
+  htop, bmon, iotop, nethogs,
+  nfs-common
+]
